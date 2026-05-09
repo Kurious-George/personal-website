@@ -216,7 +216,7 @@
         </li>
         <li>
           <a href="https://www.deindefinancial.com/" target="_blank">
-            <span class="role">IT intern</span>
+            <span class="role">info tech intern</span>
             <img class="logo" src="assets/deinde-financial-logo.jpeg" alt="Deinde Financial" />
             <span class="name">Deinde Financial</span>
           </a>
@@ -229,7 +229,7 @@
       <ul>
         <li>
           <a href="https://www.villanova.edu/university/engineering/academic-programs/electrical-computer/bs-computer-engineering.html" target="_blank">
-            <span class="role">computer eng.</span>
+            <span class="role">computer engineering</span>
             <img class="logo" src="assets/villanova-university-logo.svg" alt="Villanova University" />
             <span class="name">Villanova University</span>
           </a>
@@ -278,7 +278,7 @@
       stars.push({
         x: Math.floor(Math.random() * canvas.width),
         y: Math.floor(Math.random() * canvas.height),
-        size: Math.random() < 0.85 ? 1 : 2,
+        size: Math.random() < 0.85 ? 2 : 3,
         opacity: 0.4 + Math.random() * 0.6,
         blinkCooldown: Math.floor(Math.random() * 400),
         blinkFrame: -1,
@@ -386,7 +386,8 @@
 
         if (a <= 0.01) continue;
         ctx.fillStyle = `rgba(${r},${g},${b},${a.toFixed(2)})`;
-        ctx.fillRect(tx, ty, j === 0 ? 2 : 1, j === 0 ? 2 : 1);
+        const sz = j === 0 ? 4 : t < 0.4 ? 3 : 2;
+        ctx.fillRect(tx, ty, sz, sz);
       }
 
       c.x += c.dx;
