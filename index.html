@@ -67,9 +67,10 @@
     }
 
     .companies li a {
-      display: flex;
+      display: grid;
+      grid-template-columns: 160px 32px 1fr;
       align-items: center;
-      gap: 0.6rem;
+      column-gap: 0.6rem;
       text-decoration: none;
       color: inherit;
       transition: transform 0.15s ease;
@@ -90,16 +91,16 @@
     }
 
     .companies li .logo {
-      width: 18px;
-      height: 18px;
+      width: 28px;
+      height: 28px;
       object-fit: contain;
       display: block;
       flex-shrink: 0;
     }
 
     .companies li .logo-placeholder {
-      width: 18px;
-      height: 18px;
+      width: 28px;
+      height: 28px;
       background: #ddd;
       flex-shrink: 0;
       border-radius: 3px;
@@ -186,7 +187,7 @@
           <li>
             <a href="https://www.certara.com/pinnacle-21-enterprise-software/" target="_blank">
               <span class="role">Software Tester</span>
-              <img class="logo" src="assets/certara-p21-logo.jpeg" alt="Certara" />
+              <img class="logo" src="assets/certara-logo.jpeg" alt="Certara" />
               <span class="name">Certara</span>
             </a>
           </li>
