@@ -64,19 +64,50 @@
 
     .companies li {
       padding: 0.4rem 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
     }
 
-    .companies li .name {
-      font-size: 1.05rem;
+    .companies li a {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.15s ease;
+    }
+
+    .companies li a:hover {
+      transform: translateX(5px);
+    }
+
+    .companies li a:hover .name {
+      color: #2563eb;
     }
 
     .companies li .role {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: #888;
       font-family: sans-serif;
+    }
+
+    .companies li .logo {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    .companies li .logo-placeholder {
+      width: 18px;
+      height: 18px;
+      background: #ddd;
+      flex-shrink: 0;
+      border-radius: 3px;
+    }
+
+    .companies li .name {
+      font-size: 1rem;
+      transition: color 0.15s ease;
     }
 
     .photo {
@@ -141,8 +172,12 @@
         <h2>Currently</h2>
         <ul>
           <li>
-            <span class="name">Company Name</span>
-            <span class="role">Role &mdash; 2023&ndash;present</span>
+            <a href="https://company.com" target="_blank">
+              <span class="role">Role</span>
+              <!-- Replace logo-placeholder with: <img class="logo" src="logo.png" alt="Company Name" /> -->
+              <div class="logo-placeholder"></div>
+              <span class="name">Company Name</span>
+            </a>
           </li>
         </ul>
       </div>
@@ -150,12 +185,18 @@
         <h2>Previously</h2>
         <ul>
           <li>
-            <span class="name">Company Name</span>
-            <span class="role">Role &mdash; 2021&ndash;2023</span>
+            <a href="https://company.com" target="_blank">
+              <span class="role">Role</span>
+              <div class="logo-placeholder"></div>
+              <span class="name">Company Name</span>
+            </a>
           </li>
           <li>
-            <span class="name">Company Name</span>
-            <span class="role">Role &mdash; 2019&ndash;2021</span>
+            <a href="https://company.com" target="_blank">
+              <span class="role">Role</span>
+              <div class="logo-placeholder"></div>
+              <span class="name">Company Name</span>
+            </a>
           </li>
         </ul>
       </div>
@@ -163,8 +204,10 @@
         <h2>Projects</h2>
         <ul>
           <li>
-            <span class="name">Project Name</span>
-            <span class="role">Description</span>
+            <a href="https://project.com" target="_blank">
+              <span class="name">Project Name</span>
+              <span class="role">Description</span>
+            </a>
           </li>
         </ul>
       </div>
@@ -172,8 +215,12 @@
         <h2>Education</h2>
         <ul>
           <li>
-            <span class="name">Institution Name</span>
-            <span class="role">Degree &mdash; Year</span>
+            <a href="https://university.edu" target="_blank">
+              <span class="role">Degree</span>
+              <!-- Replace logo-placeholder with: <img class="logo" src="logo.png" alt="University Name" /> -->
+              <div class="logo-placeholder"></div>
+              <span class="name">University Name</span>
+            </a>
           </li>
         </ul>
       </div>
