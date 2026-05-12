@@ -1,0 +1,177 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Courier New', Courier, monospace;
+  background: #000;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+}
+
+#bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.inner {
+  display: flex;
+  flex-direction: row;
+  gap: 4rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1100px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Left column ── */
+
+.left {
+  flex: 0 0 auto;
+}
+
+.name-block {
+  margin-bottom: 2rem;
+}
+
+.name-block h1 {
+  font-size: 2.25rem;
+  font-weight: bold;
+  color: #3b82f6;
+  margin-bottom: 0.5rem;
+}
+
+.divider {
+  height: 1px;
+  background: #374151;
+}
+
+.section {
+  margin-top: 2rem;
+}
+
+.section h2 {
+  font-size: 1.5rem;
+  font-weight: normal;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.section ul {
+  list-style: none;
+}
+
+.section li a {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease;
+}
+
+.section li a:hover {
+  transform: translateX(4px);
+}
+
+.section li a:hover .name {
+  color: #60a5fa;
+}
+
+.section li .role {
+  color: #6b7280;
+  font-size: 0.85rem;
+  width: 7rem;
+  flex-shrink: 0;
+}
+
+.section li .logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 4px;
+}
+
+.section li .name {
+  color: #fff;
+  transition: color 0.2s ease;
+}
+
+.socials-row {
+  margin-top: 2rem;
+}
+
+.socials {
+  display: flex;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.socials a {
+  color: #9ca3af;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s ease;
+}
+
+.socials a:hover {
+  color: #60a5fa;
+}
+
+.socials a svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+/* ── Right column ── */
+
+.right {
+  flex: 0 0 auto;
+}
+
+.right img {
+  width: 280px;
+  display: block;
+  object-fit: cover;
+  border: 1px solid #374151;
+}
+
+@media (max-width: 700px) {
+  body {
+    align-items: flex-start;
+    padding: 2rem 1.25rem;
+  }
+
+  .inner {
+    flex-direction: column;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
+  .right {
+    width: 100%;
+  }
+
+  .right img {
+    width: 100%;
+  }
+
+  .name-block h1 {
+    font-size: 1.75rem;
+  }
+
+  .section li .role {
+    width: 6rem;
+  }
+}
