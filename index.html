@@ -315,133 +315,6 @@
     { hull: [200, 180, 120], cockpit: [255, 220, 60]  },
   ];
 
-  // USS Enterprise NCC-1701-D, top-down view, 14w × 11h
-  // Types: 0=hull  1=bridge  2=nacelle-aft(blue)  3=Bussard-collector(orange-red)
-  const ENT_W = 14;
-  const ENT_H = 11;
-  const ENT_SPRITE = [
-    // Upper nacelle
-    [0,0,2],[1,0,0],[2,0,0],
-    [0,1,2],[1,1,0],[2,1,0],
-    // Saucer: stepped oval  4-6-7-8-7-6-4  (only center row reaches max width)
-    [8,2,0],[9,2,0],[10,2,0],[11,2,0],
-    [2,3,3],[3,3,0],[4,3,0],[5,3,0],[7,3,0],[8,3,0],[9,3,0],[10,3,0],[11,3,0],[12,3,0],
-    [4,4,0],[5,4,0],[6,4,0],[7,4,0],[8,4,0],[9,4,0],[10,4,0],[11,4,0],[12,4,0],
-    [4,5,0],[5,5,0],[6,5,0],[7,5,0],[8,5,0],[9,5,1],[10,5,0],[11,5,0],[12,5,0],[13,5,0],
-    [4,6,0],[5,6,0],[6,6,0],[7,6,0],[8,6,0],[9,6,0],[10,6,0],[11,6,0],[12,6,0],
-    [2,7,3],[3,7,0],[4,7,0],[5,7,0],[7,7,0],[8,7,0],[9,7,0],[10,7,0],[11,7,0],[12,7,0],
-    [8,8,0],[9,8,0],[10,8,0],[11,8,0],
-    // Lower nacelle
-    [0,9,2],[1,9,0],[2,9,0],
-    [0,10,2],[1,10,0],[2,10,0],
-  ];
-  const ENT_COLORS = {
-    hull:    [210, 215, 225],
-    bridge:  [200, 230, 255],
-    engine:  [60,  120, 255],
-    bussard: [255, 100,  30],
-  };
-
-  // Imperial Star Destroyer, top-down wedge, 14w × 10h
-  // Triangular taper: stern (col 0) full width, bow (col 13) 2 rows
-  // [col, row, type]  0=hull  1=command-tower  2=engine-nozzle  3=dark-detail
-  // Layout (flying right, bow=col13):
-  //  E=engine  S=hull  T=tower(2×4 block)  D=detail
-  //  r0: E S S S . . . . . . .  .  .  .
-  //  r1: E S S S S S S . . . .  .  .  .
-  //  r2: S S S S S S S S S S .  .  .  .
-  //  r3: S S S D S T T S S D S  S  S  .
-  //  r4: E S S S S T T S D S S  D  S  S
-  //  r5: E S S S S T T S D S S  D  S  S
-  //  r6: S S S D S T T S S D S  S  S  .
-  //  r7: S S S S S S S S S S .  .  .  .
-  //  r8: E S S S S S S . . . .  .  .  .
-  //  r9: E S S S . . . . . . .  .  .  .
-  const ISD_W = 14;
-  const ISD_H = 10;
-  const ISD_SPRITE = [
-    // Stern cols 0-3, full height
-    [0,0,2],[0,1,2],[0,2,0],[0,3,0],[0,4,2],[0,5,2],[0,6,0],[0,7,0],[0,8,2],[0,9,2],
-    [1,0,0],[1,1,0],[1,2,0],[1,3,0],[1,4,0],[1,5,0],[1,6,0],[1,7,0],[1,8,0],[1,9,0],
-    [2,0,0],[2,1,0],[2,2,0],[2,3,0],[2,4,0],[2,5,0],[2,6,0],[2,7,0],[2,8,0],[2,9,0],
-    [3,0,0],[3,1,0],[3,2,0],[3,3,3],[3,4,0],[3,5,0],[3,6,3],[3,7,0],[3,8,0],[3,9,0],
-    // Cols 4-6, rows 1-8 (command tower 2×4 block at cols 5-6, rows 3-6)
-    [4,1,0],[4,2,0],[4,3,0],[4,4,0],[4,5,0],[4,6,0],[4,7,0],[4,8,0],
-    [5,1,0],[5,2,0],[5,3,1],[5,4,1],[5,5,1],[5,6,1],[5,7,0],[5,8,0],
-    [6,1,0],[6,2,0],[6,3,1],[6,4,1],[6,5,1],[6,6,1],[6,7,0],[6,8,0],
-    // Cols 7-9, rows 2-7 (weapon battery at col 8 center, flanking detail at col 9)
-    [7,2,0],[7,3,0],[7,4,0],[7,5,0],[7,6,0],[7,7,0],
-    [8,2,0],[8,3,0],[8,4,3],[8,5,3],[8,6,0],[8,7,0],
-    [9,2,0],[9,3,3],[9,4,0],[9,5,0],[9,6,3],[9,7,0],
-    // Cols 10-12, rows 3-6 (deflector detail at col 11 center)
-    [10,3,0],[10,4,0],[10,5,0],[10,6,0],
-    [11,3,0],[11,4,3],[11,5,3],[11,6,0],
-    [12,3,0],[12,4,0],[12,5,0],[12,6,0],
-    // Bow col 13, rows 4-5
-    [13,4,0],[13,5,0],
-  ];
-  const ISD_COLORS = {
-    hull:   [180, 182, 190],
-    bridge: [215, 225, 238],
-    engine: [180, 215, 255],
-    detail: [148, 150, 158],
-  };
-
-  // Babylon 5 station, side profile, 26w × 12h
-  // Flying right: bow (docking end) = col 25, stern (thrusters) = col 0
-  // Two solar-fin pairs at cols 4-10 and 12-18; main body rows 4-7
-  // Types: 0=hull  1=docking-bay-ring  2=thruster  3=solar-fin  4=detail/grid
-  const B5_W = 26;
-  const B5_H = 12;
-  const B5_SPRITE = [
-    // ── Upper fin pair 1 (cols 4-10) and pair 2 (cols 12-18) ──
-    // Row 0 outer: 5 wide each
-    [5,0,3],[6,0,3],[7,0,3],[8,0,3],[9,0,3],
-    [13,0,3],[14,0,3],[15,0,3],[16,0,3],[17,0,3],
-    // Row 1: 7 wide each
-    [4,1,3],[5,1,3],[6,1,3],[7,1,3],[8,1,3],[9,1,3],[10,1,3],
-    [12,1,3],[13,1,3],[14,1,3],[15,1,3],[16,1,3],[17,1,3],[18,1,3],
-    // Row 2: 7 wide, panel-grid mark at center col of each fin
-    [4,2,3],[5,2,3],[6,2,3],[7,2,4],[8,2,3],[9,2,3],[10,2,3],
-    [12,2,3],[13,2,3],[14,2,3],[15,2,4],[16,2,3],[17,2,3],[18,2,3],
-    // Row 3: 7 wide (base, touching body)
-    [4,3,3],[5,3,3],[6,3,3],[7,3,3],[8,3,3],[9,3,3],[10,3,3],
-    [12,3,3],[13,3,3],[14,3,3],[15,3,3],[16,3,3],[17,3,3],[18,3,3],
-    // ── Main body: rows 4-7, cols 0-25 ──
-    // Rows 4 & 7: with section-divider detail at cols 3, 11, 19; docking ring at cols 23-25
-    [0,4,2],[1,4,0],[2,4,0],[3,4,4],[4,4,0],[5,4,0],[6,4,0],[7,4,0],[8,4,0],[9,4,0],[10,4,0],
-    [11,4,4],[12,4,0],[13,4,0],[14,4,0],[15,4,0],[16,4,0],[17,4,0],[18,4,0],
-    [19,4,4],[20,4,0],[21,4,0],[22,4,0],[23,4,1],[24,4,1],[25,4,1],
-    // Row 5: plain hull
-    [0,5,2],[1,5,0],[2,5,0],[3,5,0],[4,5,0],[5,5,0],[6,5,0],[7,5,0],[8,5,0],[9,5,0],[10,5,0],
-    [11,5,0],[12,5,0],[13,5,0],[14,5,0],[15,5,0],[16,5,0],[17,5,0],[18,5,0],
-    [19,5,0],[20,5,0],[21,5,0],[22,5,0],[23,5,1],[24,5,1],[25,5,1],
-    // Row 6: plain hull
-    [0,6,2],[1,6,0],[2,6,0],[3,6,0],[4,6,0],[5,6,0],[6,6,0],[7,6,0],[8,6,0],[9,6,0],[10,6,0],
-    [11,6,0],[12,6,0],[13,6,0],[14,6,0],[15,6,0],[16,6,0],[17,6,0],[18,6,0],
-    [19,6,0],[20,6,0],[21,6,0],[22,6,0],[23,6,1],[24,6,1],[25,6,1],
-    // Row 7: same as row 4
-    [0,7,2],[1,7,0],[2,7,0],[3,7,4],[4,7,0],[5,7,0],[6,7,0],[7,7,0],[8,7,0],[9,7,0],[10,7,0],
-    [11,7,4],[12,7,0],[13,7,0],[14,7,0],[15,7,0],[16,7,0],[17,7,0],[18,7,0],
-    [19,7,4],[20,7,0],[21,7,0],[22,7,0],[23,7,1],[24,7,1],[25,7,1],
-    // ── Lower fin pair 1 and pair 2 (mirror of upper) ──
-    [4,8,3],[5,8,3],[6,8,3],[7,8,3],[8,8,3],[9,8,3],[10,8,3],
-    [12,8,3],[13,8,3],[14,8,3],[15,8,3],[16,8,3],[17,8,3],[18,8,3],
-    [4,9,3],[5,9,3],[6,9,3],[7,9,4],[8,9,3],[9,9,3],[10,9,3],
-    [12,9,3],[13,9,3],[14,9,3],[15,9,4],[16,9,3],[17,9,3],[18,9,3],
-    [4,10,3],[5,10,3],[6,10,3],[7,10,3],[8,10,3],[9,10,3],[10,10,3],
-    [12,10,3],[13,10,3],[14,10,3],[15,10,3],[16,10,3],[17,10,3],[18,10,3],
-    [5,11,3],[6,11,3],[7,11,3],[8,11,3],[9,11,3],
-    [13,11,3],[14,11,3],[15,11,3],[16,11,3],[17,11,3],
-  ];
-  const B5_COLORS = {
-    hull:    [170, 162, 155],
-    dockEnd: [195, 212, 230],
-    thruster:[180, 215, 255],
-    fin:     [108, 112, 118],
-    detail:  [132, 126, 120],
-  };
-
   let starLayer = null;
 
   function buildStarLayer() {
@@ -480,47 +353,6 @@
       }
     }
 
-    const entScale = 3;
-    const { hull: eHull, bridge: eBridge, engine: eEngine, bussard: eBussard } = ENT_COLORS;
-    for (const goRight of [true, false]) {
-      const oc = makeOffscreen(ENT_W * entScale, ENT_H * entScale);
-      const octx = oc.getContext('2d');
-      for (const [col, row, type] of ENT_SPRITE) {
-        const dc = goRight ? col : (ENT_W - 1 - col);
-        const [r, g, b] = type === 0 ? eHull : type === 1 ? eBridge : type === 2 ? eEngine : eBussard;
-        octx.fillStyle = `rgb(${r},${g},${b})`;
-        octx.fillRect(dc * entScale, row * entScale, entScale, entScale);
-      }
-      spriteCache[`enterprise_${goRight}`] = oc;
-    }
-
-    const isdScale = 5;
-    const { hull: iHull, bridge: iBridge, engine: iEngine, detail: iDetail } = ISD_COLORS;
-    for (const goRight of [true, false]) {
-      const oc = makeOffscreen(ISD_W * isdScale, ISD_H * isdScale);
-      const octx = oc.getContext('2d');
-      for (const [col, row, type] of ISD_SPRITE) {
-        const dc = goRight ? col : (ISD_W - 1 - col);
-        const [r, g, b] = type === 0 ? iHull : type === 1 ? iBridge : type === 2 ? iEngine : iDetail;
-        octx.fillStyle = `rgb(${r},${g},${b})`;
-        octx.fillRect(dc * isdScale, row * isdScale, isdScale, isdScale);
-      }
-      spriteCache[`stardestroyer_${goRight}`] = oc;
-    }
-
-    const b5Scale = 5;
-    const { hull: bHull, dockEnd: bDock, thruster: bThrust, fin: bFin, detail: bDetail } = B5_COLORS;
-    for (const goRight of [true, false]) {
-      const oc = makeOffscreen(B5_W * b5Scale, B5_H * b5Scale);
-      const octx = oc.getContext('2d');
-      for (const [col, row, type] of B5_SPRITE) {
-        const dc = goRight ? col : (B5_W - 1 - col);
-        const [r, g, b] = type === 0 ? bHull : type === 1 ? bDock : type === 2 ? bThrust : type === 3 ? bFin : bDetail;
-        octx.fillStyle = `rgb(${r},${g},${b})`;
-        octx.fillRect(dc * b5Scale, row * b5Scale, b5Scale, b5Scale);
-      }
-      spriteCache[`b5_${goRight}`] = oc;
-    }
   }
 
   function initStars() {
@@ -574,17 +406,14 @@
 
   function spawnShip() {
     const goRight = Math.random() < 0.5;
-    const r = Math.random();
-    const type = r < 0.22 ? 'enterprise' : r < 0.4 ? 'stardestroyer' : r < 0.5 ? 'b5' : 'generic';
-    const scale = type === 'enterprise' ? 3 : type === 'stardestroyer' ? 5 : type === 'b5' ? 5 : (Math.random() < 0.4 ? 2 : 3);
-    const spriteW = type === 'enterprise' ? ENT_W : type === 'stardestroyer' ? ISD_W : type === 'b5' ? B5_W : SHIP_W;
-    const speed = type === 'b5' ? 0.3 + Math.random() * 0.35 : 1 + Math.random() * 1.5;
+    const type = 'generic';
+    const scale = Math.random() < 0.4 ? 2 : 3;
     const y = 20 + Math.random() * (canvas.height * 0.8 - 20);
     const colorScheme = Math.floor(Math.random() * SHIP_COLORS.length);
     ships.push({
-      x: goRight ? -(spriteW * scale + 20) : canvas.width + 20,
+      x: goRight ? -(SHIP_W * scale + 20) : canvas.width + 20,
       y,
-      dx: goRight ? speed : -speed,
+      dx: goRight ? 1 + Math.random() * 1.5 : -(1 + Math.random() * 1.5),
       dy: (Math.random() - 0.5) * 0.3,
       goRight,
       scale,
@@ -595,9 +424,6 @@
   }
 
   function drawShip(ship) {
-    if (ship.type === 'enterprise') { drawEnterprise(ship); return; }
-    if (ship.type === 'stardestroyer') { drawISD(ship); return; }
-    if (ship.type === 'b5') { drawB5(ship); return; }
     const { x, y, goRight, scale, colorScheme, frame } = ship;
 
     ctx.drawImage(spriteCache[`generic_${colorScheme}_${goRight}_${scale}`], Math.floor(x), Math.floor(y));
@@ -624,75 +450,6 @@
     }
   }
 
-  function drawEnterprise(ship) {
-    const { x, y, goRight, scale, frame } = ship;
-
-    ctx.drawImage(spriteCache[`enterprise_${goRight}`], Math.floor(x), Math.floor(y));
-
-    const ex0 = goRight ? Math.floor(x) : Math.floor(x) + (ENT_W - 1) * scale;
-    const dir = goRight ? -1 : 1;
-    const len = 6 + Math.floor(Math.abs(Math.sin(frame * 0.35)) * 3);
-
-    for (const row of [0, 1, ENT_H - 2, ENT_H - 1]) {
-      const ey = Math.floor(y) + row * scale;
-      for (let i = 0; i < len; i++) {
-        const t = i / len;
-        let r, g, b, a;
-        if (t < 0.3)       { r = 180; g = 220; b = 255; a = 1.0; }
-        else if (t < 0.65) { r = 60;  g = 120; b = 255; a = 0.85 - t * 0.8; }
-        else               { r = 20;  g = 60;  b = 200; a = 0.3 - t * 0.3; }
-        if (a <= 0.01) continue;
-        const ex = ex0 + dir * (i + 1) * scale;
-        ctx.fillStyle = `rgba(${r},${g},${b},${a.toFixed(2)})`;
-        ctx.fillRect(ex, ey, scale, scale);
-      }
-    }
-  }
-
-  function drawB5(ship) {
-    const { x, y, goRight, scale, frame } = ship;
-
-    ctx.drawImage(spriteCache[`b5_${goRight}`], Math.floor(x), Math.floor(y));
-
-    const ex0 = goRight ? Math.floor(x) : Math.floor(x) + (B5_W - 1) * scale;
-    const dir = goRight ? -1 : 1;
-    const len = 2 + Math.floor(Math.abs(Math.sin(frame * 0.2)) * 3);
-
-    for (const row of [4, 5, 6, 7]) {
-      const ey = Math.floor(y) + row * scale;
-      for (let i = 0; i < len; i++) {
-        const a = (1 - i / len) * 0.55;
-        const ex = ex0 + dir * (i + 1) * scale;
-        ctx.fillStyle = `rgba(180,215,255,${a.toFixed(2)})`;
-        ctx.fillRect(ex, ey, scale, scale);
-      }
-    }
-  }
-
-  function drawISD(ship) {
-    const { x, y, goRight, scale, frame } = ship;
-
-    ctx.drawImage(spriteCache[`stardestroyer_${goRight}`], Math.floor(x), Math.floor(y));
-
-    const ex0 = goRight ? Math.floor(x) : Math.floor(x) + (ISD_W - 1) * scale;
-    const dir = goRight ? -1 : 1;
-    const len = 4 + Math.floor(Math.abs(Math.sin(frame * 0.28)) * 4);
-
-    for (const row of [0, 1, 4, 5, ISD_H - 2, ISD_H - 1]) {
-      const ey = Math.floor(y) + row * scale;
-      for (let i = 0; i < len; i++) {
-        const t = i / len;
-        let r, g, b, a;
-        if (t < 0.25)     { r = 220; g = 240; b = 255; a = 1.0; }
-        else if (t < 0.6) { r = 100; g = 165; b = 255; a = 0.9 - t; }
-        else              { r = 60;  g = 100; b = 220; a = 0.35 - t * 0.35; }
-        if (a <= 0.01) continue;
-        const ex = ex0 + dir * (i + 1) * scale;
-        ctx.fillStyle = `rgba(${r},${g},${b},${a.toFixed(2)})`;
-        ctx.fillRect(ex, ey, scale, scale);
-      }
-    }
-  }
 
   function drawFrame(now) {
     rafId = requestAnimationFrame(drawFrame);
