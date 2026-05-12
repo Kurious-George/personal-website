@@ -1,6 +1,6 @@
 # Personal-Website
 <img width="1280" height="720" alt="personalwebsitepreview" src="https://github.com/user-attachments/assets/2fd1fc92-5a0f-48d8-afa9-99cede4a29fd" />
-My personal website — a single-page static site built with plain HTML and CSS.
+My personal website, a single-page static site built with plain HTML, CSS & JS.
 
 ## Features
 
