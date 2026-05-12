@@ -219,7 +219,7 @@
         <li>
           <a href="https://siteforward.ai/" target="_blank">
             <span class="role">full stack dev</span>
-            <img class="logo" src="assets/siteforward-logo.png" alt="SiteForward" />
+            <img class="logo" src="assets/siteforward-logo.webp" alt="SiteForward" />
             <span class="name">SiteForward</span>
           </a>
         </li>
@@ -232,14 +232,14 @@
         <li>
           <a href="https://www.certara.com/pinnacle-21-enterprise-software/" target="_blank">
             <span class="role">software tester</span>
-            <img class="logo" src="assets/certara-logo.jpeg" alt="Certara" />
+            <img class="logo" src="assets/certara-logo.webp" alt="Certara" />
             <span class="name">Certara</span>
           </a>
         </li>
         <li>
           <a href="https://www.deindefinancial.com/" target="_blank">
             <span class="role">info tech intern</span>
-            <img class="logo" src="assets/deinde-financial-logo.jpeg" alt="Deinde Financial" />
+            <img class="logo" src="assets/deinde-financial-logo.webp" alt="Deinde Financial" />
             <span class="name">Deinde Financial</span>
           </a>
         </li>
@@ -279,7 +279,7 @@
   </div>
 
   <div class="right">
-    <img src="assets/placeholder-profile-pic.jpg" alt="George Hendrick" />
+    <img src="assets/placeholder-profile-pic.webp" fetchpriority="high" alt="George Hendrick" />
   </div>
 
 </div>
@@ -295,6 +295,9 @@
 
   let ships = [];
   let nextShip = 60;
+  let rafId;
+  const TARGET_MS = 1000 / 30;
+  let lastTime = -1000;
 
   const SHIP_W = 7;
   // [col, row, colorType]  0=hull  1=cockpit  2=engine
@@ -439,6 +442,87 @@
     detail:  [132, 126, 120],
   };
 
+  let starLayer = null;
+
+  function buildStarLayer() {
+    starLayer = makeOffscreen(canvas.width, canvas.height);
+    const slctx = starLayer.getContext('2d');
+    for (const s of stars) {
+      slctx.fillStyle = `rgba(255,255,255,${s.opacity.toFixed(2)})`;
+      slctx.fillRect(s.x, s.y, s.size, s.size);
+    }
+  }
+
+  const spriteCache = {};
+
+  function makeOffscreen(w, h) {
+    if (typeof OffscreenCanvas !== 'undefined') return new OffscreenCanvas(w, h);
+    const c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    return c;
+  }
+
+  function buildSpriteCache() {
+    for (let cs = 0; cs < SHIP_COLORS.length; cs++) {
+      const { hull, cockpit } = SHIP_COLORS[cs];
+      for (const goRight of [true, false]) {
+        for (const scale of [2, 3]) {
+          const oc = makeOffscreen(SHIP_W * scale, 5 * scale);
+          const octx = oc.getContext('2d');
+          for (const [col, row, type] of SHIP_SPRITE) {
+            const dc = goRight ? col : (SHIP_W - 1 - col);
+            const [r, g, b] = type === 0 ? hull : type === 1 ? cockpit : [255, 140, 20];
+            octx.fillStyle = `rgb(${r},${g},${b})`;
+            octx.fillRect(dc * scale, row * scale, scale, scale);
+          }
+          spriteCache[`generic_${cs}_${goRight}_${scale}`] = oc;
+        }
+      }
+    }
+
+    const entScale = 3;
+    const { hull: eHull, bridge: eBridge, engine: eEngine, bussard: eBussard } = ENT_COLORS;
+    for (const goRight of [true, false]) {
+      const oc = makeOffscreen(ENT_W * entScale, ENT_H * entScale);
+      const octx = oc.getContext('2d');
+      for (const [col, row, type] of ENT_SPRITE) {
+        const dc = goRight ? col : (ENT_W - 1 - col);
+        const [r, g, b] = type === 0 ? eHull : type === 1 ? eBridge : type === 2 ? eEngine : eBussard;
+        octx.fillStyle = `rgb(${r},${g},${b})`;
+        octx.fillRect(dc * entScale, row * entScale, entScale, entScale);
+      }
+      spriteCache[`enterprise_${goRight}`] = oc;
+    }
+
+    const isdScale = 5;
+    const { hull: iHull, bridge: iBridge, engine: iEngine, detail: iDetail } = ISD_COLORS;
+    for (const goRight of [true, false]) {
+      const oc = makeOffscreen(ISD_W * isdScale, ISD_H * isdScale);
+      const octx = oc.getContext('2d');
+      for (const [col, row, type] of ISD_SPRITE) {
+        const dc = goRight ? col : (ISD_W - 1 - col);
+        const [r, g, b] = type === 0 ? iHull : type === 1 ? iBridge : type === 2 ? iEngine : iDetail;
+        octx.fillStyle = `rgb(${r},${g},${b})`;
+        octx.fillRect(dc * isdScale, row * isdScale, isdScale, isdScale);
+      }
+      spriteCache[`stardestroyer_${goRight}`] = oc;
+    }
+
+    const b5Scale = 5;
+    const { hull: bHull, dockEnd: bDock, thruster: bThrust, fin: bFin, detail: bDetail } = B5_COLORS;
+    for (const goRight of [true, false]) {
+      const oc = makeOffscreen(B5_W * b5Scale, B5_H * b5Scale);
+      const octx = oc.getContext('2d');
+      for (const [col, row, type] of B5_SPRITE) {
+        const dc = goRight ? col : (B5_W - 1 - col);
+        const [r, g, b] = type === 0 ? bHull : type === 1 ? bDock : type === 2 ? bThrust : type === 3 ? bFin : bDetail;
+        octx.fillStyle = `rgb(${r},${g},${b})`;
+        octx.fillRect(dc * b5Scale, row * b5Scale, b5Scale, b5Scale);
+      }
+      spriteCache[`b5_${goRight}`] = oc;
+    }
+  }
+
   function initStars() {
     stars = [];
     for (let i = 0; i < 200; i++) {
@@ -458,6 +542,7 @@
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     initStars();
+    buildStarLayer();
   }
   window.addEventListener('resize', resize);
   resize();
@@ -514,18 +599,9 @@
     if (ship.type === 'stardestroyer') { drawISD(ship); return; }
     if (ship.type === 'b5') { drawB5(ship); return; }
     const { x, y, goRight, scale, colorScheme, frame } = ship;
-    const { hull, cockpit } = SHIP_COLORS[colorScheme];
 
-    for (const [col, row, type] of SHIP_SPRITE) {
-      const dc = goRight ? col : (SHIP_W - 1 - col);
-      const px = Math.floor(x) + dc * scale;
-      const py = Math.floor(y) + row * scale;
-      const [r, g, b] = type === 0 ? hull : type === 1 ? cockpit : [255, 140, 20];
-      ctx.fillStyle = `rgb(${r},${g},${b})`;
-      ctx.fillRect(px, py, scale, scale);
-    }
+    ctx.drawImage(spriteCache[`generic_${colorScheme}_${goRight}_${scale}`], Math.floor(x), Math.floor(y));
 
-    // Orange engine exhaust from trailing edge
     const ex0 = goRight ? Math.floor(x) : Math.floor(x) + (SHIP_W - 1) * scale;
     const ey = Math.floor(y) + 2 * scale;
     const dir = goRight ? -1 : 1;
@@ -550,18 +626,9 @@
 
   function drawEnterprise(ship) {
     const { x, y, goRight, scale, frame } = ship;
-    const { hull, bridge, engine, bussard } = ENT_COLORS;
 
-    for (const [col, row, type] of ENT_SPRITE) {
-      const dc = goRight ? col : (ENT_W - 1 - col);
-      const px = Math.floor(x) + dc * scale;
-      const py = Math.floor(y) + row * scale;
-      const [r, g, b] = type === 0 ? hull : type === 1 ? bridge : type === 2 ? engine : bussard;
-      ctx.fillStyle = `rgb(${r},${g},${b})`;
-      ctx.fillRect(px, py, scale, scale);
-    }
+    ctx.drawImage(spriteCache[`enterprise_${goRight}`], Math.floor(x), Math.floor(y));
 
-    // Blue warp exhaust from both nacelle aft ends
     const ex0 = goRight ? Math.floor(x) : Math.floor(x) + (ENT_W - 1) * scale;
     const dir = goRight ? -1 : 1;
     const len = 6 + Math.floor(Math.abs(Math.sin(frame * 0.35)) * 3);
@@ -584,18 +651,9 @@
 
   function drawB5(ship) {
     const { x, y, goRight, scale, frame } = ship;
-    const { hull, dockEnd, thruster, fin, detail } = B5_COLORS;
 
-    for (const [col, row, type] of B5_SPRITE) {
-      const dc = goRight ? col : (B5_W - 1 - col);
-      const px = Math.floor(x) + dc * scale;
-      const py = Math.floor(y) + row * scale;
-      const [r, g, b] = type === 0 ? hull : type === 1 ? dockEnd : type === 2 ? thruster : type === 3 ? fin : detail;
-      ctx.fillStyle = `rgb(${r},${g},${b})`;
-      ctx.fillRect(px, py, scale, scale);
-    }
+    ctx.drawImage(spriteCache[`b5_${goRight}`], Math.floor(x), Math.floor(y));
 
-    // Faint thruster exhaust at stern (station moves slowly)
     const ex0 = goRight ? Math.floor(x) : Math.floor(x) + (B5_W - 1) * scale;
     const dir = goRight ? -1 : 1;
     const len = 2 + Math.floor(Math.abs(Math.sin(frame * 0.2)) * 3);
@@ -613,18 +671,9 @@
 
   function drawISD(ship) {
     const { x, y, goRight, scale, frame } = ship;
-    const { hull, bridge, engine, detail } = ISD_COLORS;
 
-    for (const [col, row, type] of ISD_SPRITE) {
-      const dc = goRight ? col : (ISD_W - 1 - col);
-      const px = Math.floor(x) + dc * scale;
-      const py = Math.floor(y) + row * scale;
-      const [r, g, b] = type === 0 ? hull : type === 1 ? bridge : type === 2 ? engine : detail;
-      ctx.fillStyle = `rgb(${r},${g},${b})`;
-      ctx.fillRect(px, py, scale, scale);
-    }
+    ctx.drawImage(spriteCache[`stardestroyer_${goRight}`], Math.floor(x), Math.floor(y));
 
-    // Blue-white engine exhaust from 3 pairs of nozzles at stern
     const ex0 = goRight ? Math.floor(x) : Math.floor(x) + (ISD_W - 1) * scale;
     const dir = goRight ? -1 : 1;
     const len = 4 + Math.floor(Math.abs(Math.sin(frame * 0.28)) * 4);
@@ -645,33 +694,33 @@
     }
   }
 
-  function drawFrame() {
+  function drawFrame(now) {
+    rafId = requestAnimationFrame(drawFrame);
+    if (now - lastTime < TARGET_MS) return;
+    lastTime = now;
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Stars
+    // Stars: blit pre-rendered layer, then overdraw only the blinking ones
+    ctx.drawImage(starLayer, 0, 0);
     for (const s of stars) {
-      let op = s.opacity;
+      if (s.blinkCooldown > 0) { s.blinkCooldown--; continue; }
+      if (s.blinkFrame === -1) s.blinkFrame = 0;
 
-      if (s.blinkCooldown > 0) {
-        s.blinkCooldown--;
-      } else if (s.blinkFrame === -1) {
-        s.blinkFrame = 0;
+      const half = s.blinkLen / 2;
+      const op = s.blinkFrame < half
+        ? s.opacity * (1 - s.blinkFrame / half)
+        : s.opacity * ((s.blinkFrame - half) / half);
+
+      s.blinkFrame++;
+      if (s.blinkFrame >= s.blinkLen) {
+        s.blinkFrame = -1;
+        s.blinkCooldown = 200 + Math.floor(Math.random() * 400);
+        continue;
       }
 
-      if (s.blinkFrame >= 0) {
-        const half = s.blinkLen / 2;
-        if (s.blinkFrame < half) {
-          op = s.opacity * (1 - s.blinkFrame / half);
-        } else {
-          op = s.opacity * ((s.blinkFrame - half) / half);
-        }
-        s.blinkFrame++;
-        if (s.blinkFrame >= s.blinkLen) {
-          s.blinkFrame = -1;
-          s.blinkCooldown = 200 + Math.floor(Math.random() * 400);
-        }
-      }
-
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(s.x, s.y, s.size, s.size);
       ctx.fillStyle = `rgba(255,255,255,${op.toFixed(2)})`;
       ctx.fillRect(s.x, s.y, s.size, s.size);
     }
@@ -742,10 +791,18 @@
       }
     }
 
-    requestAnimationFrame(drawFrame);
   }
 
-  drawFrame();
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      cancelAnimationFrame(rafId);
+    } else {
+      rafId = requestAnimationFrame(drawFrame);
+    }
+  });
+
+  buildSpriteCache();
+  rafId = requestAnimationFrame(drawFrame);
 </script>
 </body>
 </html>
