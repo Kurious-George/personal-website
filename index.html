@@ -155,18 +155,6 @@
       border: 1px solid #374151;
     }
 
-    .right .placeholder {
-      width: 280px;
-      aspect-ratio: 3/4;
-      background: #111;
-      border: 1px solid #374151;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #6b7280;
-      font-size: 0.8rem;
-    }
-
     @media (max-width: 700px) {
       body {
         align-items: flex-start;
@@ -185,11 +173,6 @@
 
       .right img {
         width: 100%;
-      }
-
-      .right .placeholder {
-        width: 100%;
-        aspect-ratio: 3/4;
       }
 
       .name-block h1 {
@@ -406,7 +389,6 @@
 
   function spawnShip() {
     const goRight = Math.random() < 0.5;
-    const type = 'generic';
     const scale = Math.random() < 0.4 ? 2 : 3;
     const y = 20 + Math.random() * (canvas.height * 0.8 - 20);
     const colorScheme = Math.floor(Math.random() * SHIP_COLORS.length);
@@ -418,7 +400,6 @@
       goRight,
       scale,
       colorScheme,
-      type,
       frame: 0,
     });
   }
@@ -542,7 +523,7 @@
       s.x += s.dx;
       s.y += s.dy;
       s.frame++;
-      const margin = Math.max(SHIP_W, ENT_W) * s.scale * 2 + 30;
+      const margin = SHIP_W * s.scale * 2 + 30;
       if (s.x > canvas.width + margin || s.x < -margin) {
         ships.splice(i, 1);
       }
