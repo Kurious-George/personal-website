@@ -1,5 +1,5 @@
 # Personal-Website
-<img width="800" height="450" alt="personal-website-preview" src="https://github.com/user-attachments/assets/20ad2d7d-2ae1-448d-86fe-0ef6f4239837" />
+<img width="800" height="401" alt="personal-website-preview" src="https://github.com/user-attachments/assets/1e99876d-f203-459e-b4a0-6a01d63bb2ff" />
 
 My personal website, a single-page static site built with plain HTML, CSS & JS.
 
